@@ -1,0 +1,79 @@
+/* CSS pour la page d'accueil */
+.App {
+    text-align: center;
+  }
+  
+  .teckel-section {
+    background-color: #f5f5f5;
+    padding: 50px;
+  }
+  
+  .teckel-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  .teckel-item {
+    width: 30%;
+    margin-bottom: 30px;
+    text-align: left;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .teckel-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px 10px 0 0;
+  }
+  
+  .teckel-item h3 {
+    margin: 10px 20px 5px 20px;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .teckel-item p {
+    margin: 0 20px 20px 20px;
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  .chatbot-section {
+    background-color: #eee;
+    padding: 50px;
+  }
+  
+  .chatbot-section h2 {
+    margin-bottom: 30px;
+    color: #333;
+  }
+  
+  .chatbot-section ul {
+    text-align: left;
+    margin-bottom: 30px;
+  }
+  
+  .chatbot-section li {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: #666;
+  }
+  
+  button {
+    background-color: #2980b9;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #2c3e50;
+  }
+  
