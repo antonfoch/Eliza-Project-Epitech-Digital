@@ -125,10 +125,9 @@ footer {
   background-color: #4b6587;
   color: #fff;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 15px;
   padding: 10px 20px;
   border: none;
-  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -143,6 +142,11 @@ footer {
   margin: 20px 0;
 }
 
+
+.footer-container {
+  position: relative;
+  margin-top: 37px;
+}
 
 
 @media (max-width: 768px) {
@@ -166,6 +170,9 @@ footer {
 
   }
 
+  .footer-container {
+    margin-top: 100px;
+  }
 
 
 

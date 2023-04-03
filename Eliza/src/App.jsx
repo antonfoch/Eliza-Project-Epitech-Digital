@@ -20,6 +20,48 @@ function App() {
       sender: 'ChatGPT',
     },
   ]);
+  const [step, setStep] = useState(0);
+  const [selectedQuestion, setSelectedQuestion] = useState('');
+
+  const predefinedQuestions = [
+    'Quelle est l\'espérance de vie d\'un teckel?',
+    'Comment dresser un teckel?',
+    'Quels sont les problèmes de santé courants chez les teckels?'
+  ];
+
+  const followUpQuestions = {
+    'Quelle est l\'espérance de vie d\'un teckel?': [
+      'Comment puis-je améliorer l\'espérance de vie de mon teckel ?',
+      'Quels facteurs influencent l\'espérance de vie des teckels ?',
+    ],
+    'Comment dresser un teckel?': [
+      'Quelles sont les meilleures méthodes pour dresser un teckel ?',
+      'Combien de temps cela prend-il pour dresser un teckel ?',
+    ],
+    'Quels sont les problèmes de santé courants chez les teckels?': [
+      'Comment prévenir ces problèmes de santé chez les teckels ?',
+      'Les teckels sont-ils plus susceptibles de développer certains problèmes de santé ?',
+    ],
+  };
+
+  const handlePredefinedQuestionClick = (question) => {
+    setSelectedQuestion(question);
+    setStep(1);
+    handleSendMessage(question);
+  };
+
+  const handleFollowUpQuestionClick = (question) => {
+    setStep(2);
+    handleSendMessage(question);
+  };
+
+  const handleSendMessage = (message) => {
+    const userMessage = { message, sender: 'user', direction: 'outgoing' };
+    const newMessages = [...messages, userMessage];
+    setMessages(newMessages);
+    sendToChatGPT(newMessages);
+  };
+
 
   const toggleChat = () => setShowChat(!showChat);
 
@@ -31,6 +73,7 @@ function App() {
     setTyping(true);
     await sendToChatGPT(newMessages);
   };
+
 
   async function sendToChatGPT(chatMessages) {
     const apiMessages = chatMessages.map(({ sender, message }) => ({
@@ -106,26 +149,56 @@ function App() {
       </div>
   </section>
   {showChat && (
-        <div className="chat-container" style={{ position: 'relative', height: '400px', width: '100%' }}>
-          <MainContainer>
-            <ChatContainer>
-              <MessageList
-                scrollBehavior="smooth"
-                typingIndicator={typing ? <TypingIndicator content="TeckHelp est en train d'écrire" /> : null}
-              >
-                {messages.map((message) => (
-                  <Message model={message} />
-                ))}
-              </MessageList>
-              <MessageInput placeholder="Poser une question ici" onSend={sendMessage} />
-            </ChatContainer>
-          </MainContainer>
-        </div>
-      )}
-     <footer>
-     <p>&copy; 2023 TeckHelp. Tous droits réservés.</p>
-   </footer>
+    <div className="chat-container" style={{ position: 'relative', height: '400px', width: '100%' }}>
+      <MainContainer>
+        <ChatContainer>
+          <MessageList>
+            {messages.map(({ message, sender, direction }) => (
+              <Message model={{ message, sender, direction }}>{message}</Message>
+            ))}
+            {typing && <TypingIndicator content="TeckHelp is typing" />}
+          </MessageList>
+          <MessageInput
+            placeholder="Tapez votre message ici..."
+            onSend={(message) => sendMessage(message)}
+          />
+        </ChatContainer>
+      </MainContainer>
+      {step === 0 && (
+  <div className="predefined-questions">
+    {predefinedQuestions.map((question) => (
+      <button
+        className="button predefined-question"
+        onClick={() => handlePredefinedQuestionClick(question)}
+      >
+        {question}
+      </button>
+    ))}
+  </div>
+)}
+{step === 1 && selectedQuestion && (
+  <div className="follow-up-questions">
+    {followUpQuestions[selectedQuestion].map((question) => (
+      <button
+        className="button follow-up-question"
+        onClick={() => handleFollowUpQuestionClick(question)}
+      >
+        {question}
+      </button>
+    ))}
+  </div>
+)}
+
+    </div>
+  )}
+  <div className="footer-container">
+  <footer>
+    <p>&copy; 2023 TeckHelp. Tous droits réservés.</p>
+  </footer>
 </div>
+</div>
+
+
   )
 }
 
