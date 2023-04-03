@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import logo from './assets/Logo.png'
 import reactLogo from './assets/react.svg'
 import './App.css'
 import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css'
@@ -7,12 +8,17 @@ import {MainContainer, ChatContainer, MessageList, Message, MessageInput, Typing
 
 function App() {
   const [typing, setTyping]= useState(false)
+  const [showChatbot, setShowChatbot] = useState(false);
   const [messages, setMessages] = useState([
     {
-      message:"Hello, I am ChatGPT",
+      message:"Bonjour, Je suis TeckHelp, votre assistant concernant vos questions sur les teckels !",
       sender: "ChatGPT"
     }
   ])
+
+  const toggleChatbot = () => {
+    setShowChatbot(!showChatbot);
+  };
 
   const handleSend = async (message) => {
     const newMessage = {
@@ -37,12 +43,13 @@ function App() {
       }else{
         role = "user"
       }
-      return { role: role,content: messageObject.message}
+      return { role: role, content: messageObject.message}
     });
+
 
     const systemMessage= {
       role:"system",
-      content:"Explique moi comme si tous les sujets avaient un rapport avec les teckels"
+      content:"Répond moi comme si tu etais un professionnel sur les teckels et que tu ne sais rien d'autres."
     }
 
     const apiRequestBody = {
@@ -53,10 +60,12 @@ function App() {
       ]
     }
 
+  console.log('API: ', apiRequestBody)
+
     await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer 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`,
+        "Authorization": `Bearer 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`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify(apiRequestBody)
@@ -76,58 +85,63 @@ function App() {
   }
 
   return (
-    <div>
-      <div className="App">
-    <header className="App-header">
-      <img src="logo.png" alt="Logo" />
-      <h1>Nom de l'application</h1>
-      <p>Bienvenue sur notre page d'accueil !</p>
-    </header>
-    <main>
-      <section className="teckel-section">
-        <h2>Les races de teckel</h2>
-        <div className="teckel-container">
-          <div className="teckel-item">
-            <img src="https://www.espritdog.com/wp-content/uploads/2021/12/le-teckel.jpg" alt="Teckel 1" />
-            <h3>Race 1</h3>
-            <p>Brève description de la race 1</p>
-          </div>
-          <div className="teckel-item">
-            <img src="https://media.discordapp.net/attachments/809896269333921872/1089920023558103040/amproute_realistic_dachshund_white_background_da4f4f28-499a-421e-9f82-e5041be0f0d7.png?width=525&height=525" alt="Teckel 2" />
-            <h3>Race 2</h3>
-            <p>Brève description de la race 2</p>
-          </div>
-          <div className="teckel-item">
-            <img src="teckel3.jpg" alt="Teckel 3" />
-            <h3>Race 3</h3>
-            <p>Brève description de la race 3</p>
-          </div>
-        </div>
-      </section>
-      <section className="chatbot-section">
-        <h2>Les avantages de notre chatbot</h2>
+  <div>
+    <header>
+      <img src={logo} alt="logo" className="logo" />
+      
+        <nav >
         <ul>
-          <li>Réponses rapides et précises aux questions sur les teckels</li>
-          <li>Disponible 24 heures sur 24, 7 jours sur 7</li>
-          <li>Interaction intuitive et conviviale</li>
+          <li><a>Accueil</a></li>
+          <li><a>À propos</a></li>
+          <li><a>Galerie</a></li>
+          <li><a>Contact</a></li>
         </ul>
-        <button>Démarrer le chatbot</button>
-      </section>
-      <div style={{position: "relative", height: "400px", width: "100%"}}>
-        <MainContainer>
-          <ChatContainer>
-            <MessageList scrollBehavior='smooth' typingIndicator={typing ? <TypingIndicator content="ChatGPT is typing" /> : null}>
-              {messages.map((message, i) => {
-                return <Message key={i} model= {message}/>
-              })}
-            </MessageList>
-            <MessageInput placeholder='Type message here' onSend={handleSend}/>
-          </ChatContainer>
-        </MainContainer>
+      </nav>
+      
+    </header>
+  <section className="banner">
+    <h2> Le chatbot qui teckel-tout en bavardant! </h2>
+  </section>
+  <section className="container">
+    <div className="grid">
+      <div className="card">
+        <img src="https://www.clairiereauxcerfs.com/wp-content/uploads/2022/10/teckel-poil-long-5.jpg" alt="Chien saucisse 1"/>
+        <h3>Source fiable !</h3>
+        <p>TeckHelp est un chatbot spécialisé dans la race de chien teckel. Il est conçu pour fournir aux amoureux des teckels une source fiable d'informations sur cette race fascinante. </p>
       </div>
-    </main>
-  </div>
-  </div>
+      <div className="card">
+        <img src="https://media.discordapp.net/attachments/809896269333921872/1089922076812525630/amproute_photo_realistic_dachshund_white_background_41c7036e-59c9-414c-9ff4-16270e3de32e.png?width=583&height=583" alt="Chien saucisse 2"/>
+        <h3>Les meilleurs conseils !</h3>
+        <p>Si vous êtes propriétaire d'un teckel ou que vous envisagez d'en adopter un, TeckHelp peut vous aider en répondant à toutes vos questions sur la race.</p>
+      </div>
+      <div className="card">
+        <img src="https://media.discordapp.net/attachments/809896269333921872/1089920023558103040/amproute_realistic_dachshund_white_background_da4f4f28-499a-421e-9f82-e5041be0f0d7.png?width=583&height=583" alt="Chien saucisse 3"/>
+        <h3>Facile à utiliser !</h3>
+        <p>TeckHelp est conçu pour être facile à utiliser et peut être utilisé à tout moment, n'importe où. Il suffit de poser une question sur les teckels et TeckHelp fournira une réponse instantanée.</p>
+      </div>
+    </div>
+    <div className="button-container">
+        <button className="button" onClick={toggleChatbot}>Parler avec TeckHelp !</button>
+      </div>
+  </section>
+  {showChatbot && (
+        <div className="chat-container" style={{position: "relative", height: "400px", width: "100%"}}>
+          <MainContainer>
+              <ChatContainer>
+                <MessageList scrollBehavior='smooth' typingIndicator={typing ? <TypingIndicator content="TeckHelp est en train d'écrire" /> : null}>
+                  {messages.map((message) => {
+                    return <Message model= {message}/>
+                  })}
+                </MessageList>
+                <MessageInput placeholder='Poser une question ici' onSend={handleSend}/>
+              </ChatContainer>
+            </MainContainer>
+        </div>
+      )}
+     <footer>
+     <p>&copy; 2023 TeckHelp. Tous droits réservés.</p>
+   </footer>
+</div>
   )
 }
 

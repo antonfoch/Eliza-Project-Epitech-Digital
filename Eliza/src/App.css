@@ -1,79 +1,172 @@
-/* CSS pour la page d'accueil */
-.App {
-    text-align: center;
-  }
-  
-  .teckel-section {
-    background-color: #f5f5f5;
-    padding: 50px;
-  }
-  
-  .teckel-container {
-    display: flex;
-    justify-content: space-between;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+.logo {
+  height: 100%;
+}
+
+body {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #FDC878;
+}
+
+header {
+  background-color: #ffffff;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+}
+
+
+nav {
+  margin-left: auto;
+}
+
+nav ul {
+  display: flex;
+}
+
+nav ul li {
+  list-style-type: none;
+  margin-left: 10px;
+}
+
+nav ul li a {
+  color: #000000;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 5px;
+}
+
+nav ul li a:hover {
+  text-decoration: underline;
+}
+
+.banner {
+  background-image: url("https://www.zooplus.fr/magazine/wp-content/uploads/2018/01/AdobeStock_267258965.jpg");
+  background-size: cover;
+  background-position: center;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.banner h2 {
+  color: #fff;
+  font-size: 48px;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 30px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+}
+
+.card h3 {
+  margin-top: 20px;
+}
+
+.card p {
+  margin-top: 10px;
+}
+
+footer {
+  background-color: #4b6587;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  margin-top: 40px;
+}
+
+.chat-container {
+  margin: 0;
+  padding: 0;
+}
+
+footer {
+  /* ... autres styles ... */
+  margin-top: 0;
+}
+
+.nav-open ul {
+  display: flex;
+  flex-direction: column;
+}
+
+.button {
+  background-color: #4b6587;
+  color: #fff;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #3a5070;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+
+
+@media (max-width: 768px) {
+  header {
     flex-wrap: wrap;
-  }
-  
-  .teckel-item {
-    width: 30%;
-    margin-bottom: 30px;
-    text-align: left;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .teckel-item img {
-    width: 100%;
+    justify-content: space-between;
     height: auto;
-    border-radius: 10px 10px 0 0;
+    padding: 20px;
   }
-  
-  .teckel-item h3 {
-    margin: 10px 20px 5px 20px;
-    font-size: 1.5rem;
-    color: #333;
+
+
+  .logo {
+    height: 150px;
   }
-  
-  .teckel-item p {
-    margin: 0 20px 20px 20px;
-    font-size: 1rem;
-    color: #666;
+
+
+  nav ul {
+    align-items: center;
+    flex-direction: column;
+    margin-top: 10px;
+
   }
-  
-  .chatbot-section {
-    background-color: #eee;
-    padding: 50px;
-  }
-  
-  .chatbot-section h2 {
-    margin-bottom: 30px;
-    color: #333;
-  }
-  
-  .chatbot-section ul {
-    text-align: left;
-    margin-bottom: 30px;
-  }
-  
-  .chatbot-section li {
-    margin-bottom: 10px;
-    font-size: 1.2rem;
-    color: #666;
-  }
-  
-  button {
-    background-color: #2980b9;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  button:hover {
-    background-color: #2c3e50;
-  }
-  
+
+
+
+
+}
