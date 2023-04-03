@@ -1,87 +1,68 @@
-import { useState } from 'react'
-import logo from './assets/Logo.png'
-import reactLogo from './assets/react.svg'
-import './App.css'
-import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css'
-import {MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator} from '@chatscope/chat-ui-kit-react'
-
+import { useState } from 'react';
+import logo from './assets/Logo.png';
+import './App.css';
+import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
+import {
+  MainContainer,
+  ChatContainer,
+  MessageList,
+  Message,
+  MessageInput,
+  TypingIndicator,
+} from '@chatscope/chat-ui-kit-react';
 
 function App() {
-  const [typing, setTyping]= useState(false)
-  const [showChatbot, setShowChatbot] = useState(false);
+  const [typing, setTyping] = useState(false);
+  const [showChat, setShowChat] = useState(false);
   const [messages, setMessages] = useState([
     {
-      message:"Bonjour, Je suis TeckHelp, votre assistant concernant vos questions sur les teckels !",
-      sender: "ChatGPT"
-    }
-  ])
+      message: 'Bonjour, Je suis TeckHelp, votre assistant concernant vos questions sur les teckels !',
+      sender: 'ChatGPT',
+    },
+  ]);
 
-  const toggleChatbot = () => {
-    setShowChatbot(!showChatbot);
+  const toggleChat = () => setShowChat(!showChat);
+
+  const sendMessage = async (message) => {
+    const userMessage = { message, sender: 'user', direction: 'outgoing' };
+    const newMessages = [...messages, userMessage];
+
+    setMessages(newMessages);
+    setTyping(true);
+    await sendToChatGPT(newMessages);
   };
 
-  const handleSend = async (message) => {
-    const newMessage = {
-      message: message,
-      sender: "user",
-      direction:"outgoing"
-  }
-    const newMessages = [...messages, newMessage]
+  async function sendToChatGPT(chatMessages) {
+    const apiMessages = chatMessages.map(({ sender, message }) => ({
+      role: sender === 'ChatGPT' ? 'assistant' : 'user',
+      content: message,
+    }));
 
-    setMessages(newMessages)
+    const requestBody = {
+      model: 'gpt-3.5-turbo',
+      messages: [
+        {
+          role: 'system',
+          content: "Répond moi comme si tu etais un professionnel sur les teckels et que tu ne sais rien d'autres.",
+        },
+        ...apiMessages,
+      ],
+    };
 
-    setTyping(true);
-
-    await processMessageToChatGPT (newMessages)
-  }
-
-  async function processMessageToChatGPT (chatMessages) {
-    let apiMessages = chatMessages.map((messageObject) => {
-      let role = "";
-      if(messageObject.sender ==='ChatGPT') {
-        role="assistant"
-      }else{
-        role = "user"
-      }
-      return { role: role, content: messageObject.message}
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer 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`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestBody),
     });
 
+    const data = await response.json();
+    const chatGPTResponse = data.choices[0].message.content;
 
-    const systemMessage= {
-      role:"system",
-      content:"Répond moi comme si tu etais un professionnel sur les teckels et que tu ne sais rien d'autres."
-    }
-
-    const apiRequestBody = {
-      "model": "gpt-3.5-turbo",
-      "messages": [
-        systemMessage,
-        ...apiMessages
-      ]
-    }
-
-  console.log('API: ', apiRequestBody)
-
-    await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer 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`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(apiRequestBody)
-    }).then((data) => {
-      return data.json();
-    }).then((data) =>{
-      console.log(data)
-      console.log(data.choices[0].message.content)
-      setMessages(
-        [...chatMessages, {
-          message : data.choices[0].message.content,
-          sender: "ChatGPT"
-        }]
-      );
-      setTyping(false)
-    })
+    setMessages([...chatMessages, { message: chatGPTResponse, sender: 'ChatGPT' }]);
+    setTyping(false);
   }
 
   return (
@@ -121,21 +102,24 @@ function App() {
       </div>
     </div>
     <div className="button-container">
-        <button className="button" onClick={toggleChatbot}>Parler avec TeckHelp !</button>
+        <button className="button" onClick={toggleChat}>Parler avec TeckHelp !</button>
       </div>
   </section>
-  {showChatbot && (
-        <div className="chat-container" style={{position: "relative", height: "400px", width: "100%"}}>
+  {showChat && (
+        <div className="chat-container" style={{ position: 'relative', height: '400px', width: '100%' }}>
           <MainContainer>
-              <ChatContainer>
-                <MessageList scrollBehavior='smooth' typingIndicator={typing ? <TypingIndicator content="TeckHelp est en train d'écrire" /> : null}>
-                  {messages.map((message) => {
-                    return <Message model= {message}/>
-                  })}
-                </MessageList>
-                <MessageInput placeholder='Poser une question ici' onSend={handleSend}/>
-              </ChatContainer>
-            </MainContainer>
+            <ChatContainer>
+              <MessageList
+                scrollBehavior="smooth"
+                typingIndicator={typing ? <TypingIndicator content="TeckHelp est en train d'écrire" /> : null}
+              >
+                {messages.map((message) => (
+                  <Message model={message} />
+                ))}
+              </MessageList>
+              <MessageInput placeholder="Poser une question ici" onSend={sendMessage} />
+            </ChatContainer>
+          </MainContainer>
         </div>
       )}
      <footer>
