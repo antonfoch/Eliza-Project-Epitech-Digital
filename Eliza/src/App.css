@@ -16,44 +16,20 @@ body {
   background-color: #FDC878;
 }
 
-header {
-  background-color: #ffffff;
-  height: 100px;
+.header {
   display: flex;
+  background-color: #fff;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 30px;
+  height: 100px;
 }
 
 
-nav {
-  margin-left: auto;
-}
-
-nav ul {
-  display: flex;
-}
-
-nav ul li {
-  list-style-type: none;
-  margin-left: 10px;
-}
-
-nav ul li a {
-  color: #000000;
-  text-decoration: none;
-  font-weight: bold;
-  padding: 5px;
-}
-
-nav ul li a:hover {
-  text-decoration: underline;
-}
 
 .banner {
-  background-image: url("https://www.zooplus.fr/magazine/wp-content/uploads/2018/01/AdobeStock_267258965.jpg");
-  background-size: cover;
-  background-position: center;
+  background-image: url("https://i.f1g.fr/media/cms/orig/2021/11/10/8739610d6fea0eba1f3e8f2297921d48ed873469a99efc3ddee4b5b79e684778.jpg");
+  background-size: 100%;
+  background-position: center 30%;
   height: 400px;
   display: flex;
   justify-content: center;
@@ -61,13 +37,14 @@ nav ul li a:hover {
   margin-bottom: 40px;
 }
 
+
 .banner h2 {
   color: #fff;
   font-size: 48px;
 }
 
 .container {
-  max-width: 1100px;
+
   margin: 0 auto;
   padding: 0 30px;
 }
@@ -103,30 +80,24 @@ footer {
   color: #fff;
   text-align: center;
   padding: 20px;
-  margin-top: 40px;
+
 }
 
-.chat-container {
-  margin: 0;
-  padding: 0;
-}
 
-footer {
-  /* ... autres styles ... */
-  margin-top: 0;
-}
 
-.nav-open ul {
+.Chatbot {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80%;
 }
 
 .button {
   background-color: #4b6587;
   color: #fff;
   font-weight: bold;
-  font-size: 15px;
-  padding: 10px 20px;
+  font-size: 30px;
+  padding: 20px 50px;
   border: none;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -148,6 +119,16 @@ footer {
   margin-top: 37px;
 }
 
+.predefined-questions-container {
+  display: flex;
+  justify-content: center;
+}
+
+.predefined-questions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 
 @media (max-width: 768px) {
   header {
@@ -159,20 +140,10 @@ footer {
 
 
   .logo {
-    height: 150px;
+    height: 70px;
+    width: 85px;
   }
 
-
-  nav ul {
-    align-items: center;
-    flex-direction: column;
-    margin-top: 10px;
-
-  }
-
-  .footer-container {
-    margin-top: 100px;
-  }
 
 
 

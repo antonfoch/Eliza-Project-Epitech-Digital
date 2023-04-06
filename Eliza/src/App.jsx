@@ -78,7 +78,7 @@ function App() {
   async function sendToChatGPT(chatMessages) {
     const apiMessages = chatMessages.map(({ sender, message }) => ({
       role: sender === 'ChatGPT' ? 'assistant' : 'user',
-      content: message,
+      content: sender === 'ChatGPT' ? message : `Vous êtes un assistant spécialisé uniquement dans les teckels et ne pouvez répondre qu'aux questions strictement liées à cette race de chien. Si une question ne concerne pas les teckels, ne répondez pas. : ${message}`
     }));
 
     const requestBody = {
@@ -86,10 +86,11 @@ function App() {
       messages: [
         {
           role: 'system',
-          content: "Répond moi comme si tu etais un professionnel sur les teckels et que tu ne sais rien d'autres.",
+          content:"Vous êtes un assistant spécialisé uniquement dans les teckels et ne pouvez répondre qu'aux questions strictement liées à cette race de chien. Si une question ne concerne pas les teckels, ne répondez pas.",
         },
         ...apiMessages,
       ],
+      temperature: 0.5,
     };
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -110,22 +111,64 @@ function App() {
 
   return (
   <div>
-    <header>
+    <header className="header">
       <img src={logo} alt="logo" className="logo" />
-      
-        <nav >
-        <ul>
-          <li><a>Accueil</a></li>
-          <li><a>À propos</a></li>
-          <li><a>Galerie</a></li>
-          <li><a>Contact</a></li>
-        </ul>
-      </nav>
-      
     </header>
   <section className="banner">
     <h2> Le chatbot qui teckel-tout en bavardant! </h2>
   </section>
+  <div className="button-container">
+        <button className="button" onClick={toggleChat}>Parler avec TeckHelp !</button>
+      </div>
+      {showChat && (
+    <div className="chat-container" style={{ position: 'relative', height: '400px', width: '100%' }}>
+      <div className='Chatbot'>
+        <MainContainer className='Maincontainer'>
+        <ChatContainer>
+          <MessageList>
+            {messages.map(({ message, sender, direction }) => (
+              <Message model={{ message, sender, direction }}>{message}</Message>
+            ))}
+            {typing && <TypingIndicator content="TeckHelp is typing" />}
+
+          </MessageList>
+          <MessageInput
+            placeholder="Tapez votre message ici..."
+            onSend={(message) => sendMessage(message)}
+          />
+        </ChatContainer>
+      </MainContainer>
+      </div>
+      <div className="predefined-questions-container">
+        {step === 0 && (
+  <div className="predefined-questions">
+    
+    {predefinedQuestions.map((question) => (
+      <button
+        className="button predefined-question"
+        onClick={() => handlePredefinedQuestionClick(question)}
+      >
+        {question}
+      </button>
+    ))}
+  </div>
+)}</div>
+      
+{step === 1 && selectedQuestion && (
+  <div className="follow-up-questions">
+    {followUpQuestions[selectedQuestion].map((question) => (
+      <button
+        className="button follow-up-question"
+        onClick={() => handleFollowUpQuestionClick(question)}
+      >
+        {question}
+      </button>
+    ))}
+  </div>
+)}
+
+    </div>
+  )}
   <section className="container">
     <div className="grid">
       <div className="card">
@@ -144,53 +187,7 @@ function App() {
         <p>TeckHelp est conçu pour être facile à utiliser et peut être utilisé à tout moment, n'importe où. Il suffit de poser une question sur les teckels et TeckHelp fournira une réponse instantanée.</p>
       </div>
     </div>
-    <div className="button-container">
-        <button className="button" onClick={toggleChat}>Parler avec TeckHelp !</button>
-      </div>
   </section>
-  {showChat && (
-    <div className="chat-container" style={{ position: 'relative', height: '400px', width: '100%' }}>
-      <MainContainer>
-        <ChatContainer>
-          <MessageList>
-            {messages.map(({ message, sender, direction }) => (
-              <Message model={{ message, sender, direction }}>{message}</Message>
-            ))}
-            {typing && <TypingIndicator content="TeckHelp is typing" />}
-          </MessageList>
-          <MessageInput
-            placeholder="Tapez votre message ici..."
-            onSend={(message) => sendMessage(message)}
-          />
-        </ChatContainer>
-      </MainContainer>
-      {step === 0 && (
-  <div className="predefined-questions">
-    {predefinedQuestions.map((question) => (
-      <button
-        className="button predefined-question"
-        onClick={() => handlePredefinedQuestionClick(question)}
-      >
-        {question}
-      </button>
-    ))}
-  </div>
-)}
-{step === 1 && selectedQuestion && (
-  <div className="follow-up-questions">
-    {followUpQuestions[selectedQuestion].map((question) => (
-      <button
-        className="button follow-up-question"
-        onClick={() => handleFollowUpQuestionClick(question)}
-      >
-        {question}
-      </button>
-    ))}
-  </div>
-)}
-
-    </div>
-  )}
   <div className="footer-container">
   <footer>
     <p>&copy; 2023 TeckHelp. Tous droits réservés.</p>
